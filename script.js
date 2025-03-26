@@ -80,14 +80,16 @@ async function handleLastRace(event) {
         time2Column.textContent = lastRaceData["last_winners"][j]["winner_time"];
         row2.appendChild(time2Column);
 
-        if (lastRaceData["weather_conditions"]["temperature"] !== 10000) {
-            var weatherColumn = document.createElement("td");
-            weatherColumn.innerHTML = "<b>Temperature:</b> " + lastRaceData["last_winners"][0]["temperature"].toString() +
-                " C<br><b>Humidity:</b> " + lastRaceData["last_winners"][0]["humidity"].toString() + " %<br><b>Rainfall:</b> " +
-                lastRaceData["last_winners"][0]["rainfall"].toString() + " mm<br><b>Track temperature:</b> " +
-                lastRaceData["last_winners"][0]["track_temperature"].toString() + " C";
-            row2.appendChild(weatherColumn);
+        var weatherColumn = document.createElement("td");
+        if (lastRaceData["last_winners"][j]["temperature"] !== 10000) {
+            weatherColumn.innerHTML = "<b>Temperature:</b> " + lastRaceData["last_winners"][j]["temperature"].toString() +
+                " C<br><b>Humidity:</b> " + lastRaceData["last_winners"][j]["humidity"].toString() + " %<br><b>Rainfall:</b> " +
+                lastRaceData["last_winners"][j]["rainfall"].toString() + " mm<br><b>Track temperature:</b> " +
+                lastRaceData["last_winners"][j]["track_temperature"].toString() + " C";
+        } else {
+            weatherColumn.innerHTML = "<i>No data</i>"
         }
+        row2.appendChild(weatherColumn);
 
         document.getElementById("lastWinnersTableBody").appendChild(row2);
     }
@@ -168,14 +170,16 @@ async function handleAnotherRace(event) {
         time2Column.textContent = anotherRaceData["last_winners"][j]["winner_time"];
         row2.appendChild(time2Column);
 
-        if (anotherRaceData["weather_conditions"]["temperature"] !== 10000) {
-            var weatherColumn = document.createElement("td");
-            weatherColumn.innerHTML = "<b>Temperature:</b> " + anotherRaceData["last_winners"][0]["temperature"].toString() +
-                " C<br><b>Humidity:</b> " + anotherRaceData["last_winners"][0]["humidity"].toString() + " %<br><b>Rainfall:</b> " +
-                anotherRaceData["last_winners"][0]["rainfall"].toString() + " mm<br><b>Track temperature:</b> " +
-                anotherRaceData["last_winners"][0]["track_temperature"].toString() + " C";
-            row2.appendChild(weatherColumn);
+        var weatherColumn = document.createElement("td");
+        if (anotherRaceData["last_winners"][j]["temperature"] !== 10000) {
+            weatherColumn.innerHTML = "<b>Temperature:</b> " + anotherRaceData["last_winners"][j]["temperature"].toString() +
+                " C<br><b>Humidity:</b> " + anotherRaceData["last_winners"][j]["humidity"].toString() + " %<br><b>Rainfall:</b> " +
+                anotherRaceData["last_winners"][j]["rainfall"].toString() + " mm<br><b>Track temperature:</b> " +
+                anotherRaceData["last_winners"][j]["track_temperature"].toString() + " C";
+        } else {
+            weatherColumn.innerHTML = "<i>No data</i>"
         }
+        row2.appendChild(weatherColumn);
 
         document.getElementById("lastWinnersTableBody").appendChild(row2);
     }
