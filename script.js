@@ -4,14 +4,45 @@ var lastRaceData;
 var anotherRaceData;
 var currentStandingsData;
 var anotherStandingsData;
+var currentConstructorsStandingsData;
 
+
+async function initializeData() {
+    var basicData;
+    await fetch(baseUrl + "/basic_data", {method: "GET"}).then(response => response.json())
+        .then(data => {console.log(data); basicData = data}).catch(error => console.log(error));
+    document.getElementById("nextRaceNameString").innerHTML = "<i>" + basicData["name"] + "</i>";
+    document.getElementById("nextRaceNameString").style.visibility = "visible";
+    document.getElementById("nextRaceCircuitString").innerHTML = "<i>" + basicData["circuit"] + "</i>";
+    document.getElementById("nextRaceCircuitString").style.visibility = "visible";
+    var date = new Date(basicData["date"]).getTime();
+    var x = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = date - now;
+        var days = Math.floor(distance / (3600000 * 24));
+        var hours = Math.floor((distance % (3600000 * 24)) / 3600000);
+        var mins = Math.floor((distance % 3600000) / 60000);
+        var secs = Math.floor((distance % 60000) / 1000);
+
+        document.getElementById("countdown").innerHTML = "<i>" + days + "d " + hours + "h " + mins + "m " + secs + "s</i>";
+        document.getElementById("countdown").style.visibility = "visible";
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("countdown").innerHTML = "<i>Race is going on!</i>";
+        }
+    }, 1000);
+    document.getElementById("lastRaceWinner").innerText = "Winner: " + basicData["last_winner"];
+    document.getElementById("lastRaceWinner").style.visibility = "visible";
+    document.getElementById("currentStandingLeader").innerText = "Leader: " + basicData["current_leader"];
+    document.getElementById("currentStandingLeader").style.visibility = "visible";
+}
+document.addEventListener("DOMContentLoaded", initializeData);
 
 document.getElementById("lastRaceBtn").addEventListener("submit", async function(event) {
     document.getElementById("standingsTable").style.display = "none";
     await fetch(baseUrl + "/results/last_race", {method: "GET"}).then(response => response.json())
         .then(data => {console.log(data); lastRaceData = data}).catch(error => console.log(error));
     console.log(lastRaceData);
-
 })
 async function handleLastRace(event) {
     document.getElementById("standingsTable").style.display = "none";
@@ -257,6 +288,12 @@ async function handleAnotherStandings(event) {
         document.getElementById("standingsTableBody").appendChild(row);
     }
     showResultsContainer();
+}
+
+async function handleCurrentConstructorsStandings(event) {
+    await fetch(baseUrl + "/standings/constructors/current", {method: "GET"}).then(response => response.json())
+        .then(data => currentConstructorsStandingsData = data).catch(error => console.log(error));
+    console.log(currentConstructorsStandingsData);
 }
 
 function showResultsContainer() {

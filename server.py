@@ -259,3 +259,28 @@ async def get_drivers_standings(year: str):
                             nation=driver["driver"]["nationality"], points=driver["points"], wins=wins)
         standings.append(standing)
     return standings
+
+@app.get("/standings/constructors/current")
+async def get_current_constructors_standings():
+    standings = []
+    data = requests.get(base_url + "/current/constructors-championship").json()
+    for constructor in data["constructors_championship"]:
+        wins = 0
+        if constructor["wins"] is not None:
+            wins = constructor["wins"]
+
+        standing = Standing(position=constructor["position"], name=constructor["team"]["teamName"], nation=constructor["team"]["country"],
+                            no=0, team="",
+                            points=constructor["points"], wins=wins)
+        standings.append(standing)
+    return standings
+
+@app.get("/basic_data")
+async def get_next_race_name():
+    data = requests.get(base_url + "/current/next").json()
+    name = data["race"][0]["raceName"]
+    circuit = data["race"][0]["circuit"]["circuitName"]
+    date = data["race"][0]["schedule"]["race"]["date"] + " " + data["race"][0]["schedule"]["race"]["time"]
+    last_winner = requests.get(base_url + "/current/last").json()["race"][0]["winner"]["surname"]
+    current_leader = requests.get(base_url + "/current/drivers-championship").json()["drivers_championship"][0]["driver"]["surname"]
+    return {"name": name, "circuit": circuit, "date": date, "last_winner": last_winner, "current_leader": current_leader}

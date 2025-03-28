@@ -1,4 +1,4 @@
-# 🏎️ F1 tracker
+# 🏎️ F1 Tracker
 API for following current and previous F1 seasons' results. 
 ## About the project
 I created a Python API for getting data about the latest F1 races' results and overall season standings using **FastAPI** and **REST** as well as **Bootstrap** for front-end. It would not be possible without two APIs I used for gathering the data, which are as follows:
